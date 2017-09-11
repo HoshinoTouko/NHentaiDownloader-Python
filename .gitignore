@@ -1,3 +1,12 @@
+# Downloaded Comics
+Comic/
+
+# IDEA
+.idea/
+
+# Test img
+test.jpg
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
