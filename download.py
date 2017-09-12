@@ -18,6 +18,7 @@ def main():
     for id in comicID:
         comic = Comic(id)
         print('Comic ID: %s' % comic.comicID)
+        print('Title: %s' % comic.title)
         print('Gallery ID: %s' % comic.galleryID)
         print('Max page number: %s' % comic.getMaxPage())
         print('Img type: %s' % comic.getImgType())

@@ -15,6 +15,7 @@ class Comic:
         self.comicID = comicID
         self.indexURL = 'https://nhentai.net/g/%s/' % comicID
         self.indexHTML = Common.parse_html(self.indexURL)
+        self.title = self.indexHTML.select('div#info')[0].select('h2')[0].string
         self.galleryID = Common.getBetween(
             self.indexHTML.select("img.lazyload")[0].get('data-src'),
             'https://t.nhentai.net/galleries/',
@@ -42,12 +43,15 @@ class Comic:
         imgType = self.getImgType()
         if not os.path.exists('Comic'):
             os.mkdir('Comic')
-        if not os.path.exists('Comic/%s' % self.comicID):
-            os.mkdir('Comic/%s' % self.comicID)
+        if not os.path.exists('Comic/%s - %s' % (self.title, self.comicID)):
+            os.mkdir('Comic/%s - %s' % (self.title, self.comicID))
         for i in range(1, self.getMaxPage() + 1):
             url = 'https://i.nhentai.net/galleries/%s/%s.%s' % (self.galleryID, i, imgType)
-            path = 'Comic/%s/%s.%s' % (self.comicID, i, imgType)
-            Common.down_img(url, path)
+            path = 'Comic/%s - %s/%s.%s' % (self.title, self.comicID, i, imgType)
+            try:
+                Common.down_img(url, path)
+            except BaseException as e:
+                print('Error! Error info is: %s' % e)
 
 
 
