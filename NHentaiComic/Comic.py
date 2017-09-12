@@ -47,7 +47,11 @@ class Comic:
             os.mkdir('Comic/%s - %s' % (self.title, self.comicID))
         for i in range(1, self.getMaxPage() + 1):
             url = 'https://i.nhentai.net/galleries/%s/%s.%s' % (self.galleryID, i, imgType)
-            path = 'Comic/%s - %s/%s.%s' % (self.title, self.comicID, i, imgType)
+            path = 'Comic/%s - %s/%s.%s' % (
+                self.title, self.comicID,
+                Common.addZero(i, self.getMaxPage() + 1),
+                imgType
+            )
             try:
                 Common.down_img(url, path)
             except BaseException as e:
@@ -56,20 +60,30 @@ class Comic:
     def checkIntegrity(self):
         imgType = self.getImgType()
         for i in range(1, self.getMaxPage() + 1):
-            if os.path.exists('Comic/%s - %s/%s.%s' % (self.title, self.comicID, i, imgType)):
+            if os.path.exists('Comic/%s - %s/%s.%s' % (self.title,
+               self.comicID,
+               Common.addZero(i, self.getMaxPage() + 1),
+               imgType
+            )):
                 continue
             else:
                 print('Comic %s page %s download FAIL!' % (self.comicID, i))
 
 
 
-
-
-
 class Common:
+    @staticmethod
+    def addZero(originalNumber, maxNumber):
+        originalStr = str(originalNumber)
+        maxStr = str(maxNumber)
+        while(len(originalStr) < len(maxStr)):
+            originalStr = '0' + originalStr
+        return originalStr
+
     @staticmethod
     def getBetween(s, start, end):
         return re.search('%s(.*)%s' % (start, end), s).group(1)
+
     @staticmethod
     def parse_html(url):
         '''Use lxml to parse html.'''
@@ -80,6 +94,7 @@ class Common:
         }
         response = requests.get(url).content
         return BeautifulSoup(response, 'lxml')
+
     @staticmethod
     def down_img(imgurl, localpath):
         '''A function to save img'''

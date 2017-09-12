@@ -5,8 +5,6 @@ import sys
 from NHentaiComic.Comic import Comic
 
 
-
-
 def main():
     if len(sys.argv) == 1:
         comicID = '206670'
