@@ -53,6 +53,14 @@ class Comic:
             except BaseException as e:
                 print('Error! Error info is: %s' % e)
 
+    def checkIntegrity(self):
+        imgType = self.getImgType()
+        for i in range(1, self.getMaxPage() + 1):
+            if os.path.exists('Comic/%s - %s/%s.%s' % (self.title, self.comicID, i, imgType)):
+                continue
+            else:
+                print('Comic %s page %s download FAIL!' % (self.comicID, i))
+
 
 
 
